@@ -4,16 +4,14 @@ import time
 #Author: Steven Harrington
 #Date: 11/23/2025
 #How techniques work
-    #Folding function
+    #Mid-square function
         #takes in a string
         #makes a integer to keep track of the sum of characters
         #go through each character in the string, and converts to unicode value
         #it adds this to the sum
-        #converts the sum into a string
-        #Makes a integer to keep track of sum of individual numbers
-        #circle thorugh each value of the string
-        #adds the number to the sum of the individual numbers
-        #returns the remainder of this sum divided by 997
+        #squares the sum and makes a string
+        #slices the middle chunk of the string and makes an integer
+        #returns the remainder of the integer divided by 997
 
     #Add/list appending collision
         #attempts to add at the index it recieved from the hash function
@@ -63,19 +61,16 @@ class HashTable:
 #Takes in a string and converts it to a integer
 def hashFunction(stringData):
     #keeps track of the sum
-    sum = 0
     sum_of_chars = 0
     #loops through the string, getting the unicode value of each character
     for char in stringData:
         sum_of_chars += ord(char)
-    string = str(sum_of_chars)
-    for char in string:
-        sum += int(char)
-    
-    #return the remainder of the sum divided by 997
-    return sum % 997
-
-print("Optimization technique: Folding hashing and list appending collision technique")
+    squared = sum_of_chars ** 2
+    string = str(squared)
+    length = len(string)//3
+    string = string[length:len(string)-length]
+    return int(string) % 997
+print("Optimization technique: Mid-square hashing and list appending collision technique")
 
 #create both movie and quote hash Tables
 movie = HashTable(997)
@@ -99,6 +94,7 @@ print(f"The movie table had {movie.collision} collision")
 print(f"The movie table has {movie.unusedSpace} unused spaces")
 print(f"How much of the data was inputted {counter}")
 print(f"{end-start:0.2f} seconds")
+
 
        
 #read in data and inputs into quote table
