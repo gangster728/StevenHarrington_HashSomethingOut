@@ -10,12 +10,10 @@ import time
         #go through each character in the string, and converts to unicode value
         #it adds this to the sum
         #then it returns the remainder of the sum divided by the size of the table or 997
-    #Add/step through collision
+    #Add/list appending collision
         #attempts to add at the index it recieved from the hash function
         #if there is nothing there, then it inputs it at this spot
-        #if there is something there, then it moves to the next index or index + 1
-        #it checks to see if there is something here, then repeats the process until the end of the table
-        #if it doesn't find a spot then the function stops
+        #if there is something there, then it appends to the end of the list attatched at the spot
 
 
 
@@ -39,20 +37,22 @@ class HashTable:
         self.unusedSpace = capacity
         self.capacity = capacity
         self.table = [None] * capacity
+        #creates list at each spot
+        for i in range(capacity):
+            self.table[i] = [None]
     
     #adds a value into the hashtable
     #the key takes in the hashfunction output
     def add(self, key, name):
-        #if it is at the end of the table, it stops
-        if key == 997:
-            return
-        #if there is already a value, at the spot it steps forward
-        elif self.table[key] != None:
+        #if there is already a value, it adds to the end of the list at that index
+        if self.table[key][0] != None:
+            
             self.collision += 1
-            self.add(key + 1, name)
+            self.table[key].append(name)
+           
         #nothing there, then it sets the spot equal to your value
         else:
-            self.table[key] = name
+            self.table[key][0] = name
             self.unusedSpace -= 1
 
 #Takes in a string and converts it to a integer
@@ -66,7 +66,7 @@ def hashFunction(stringData):
     #return the remainder of the sum divided by 997
     return sum_of_chars % 997
 
-print("Optimization technique: division hashing and stepping collision technique")
+print("Optimization technique: division hashing and list appending collision technique")
 
 #create both movie and quote hash Tables
 movie = HashTable(997)
@@ -83,10 +83,7 @@ with open(file, 'r', newline = '', encoding = "utf8") as csvfile:
             counter+=1
             continue
         newItem = DataItem(row)
-        if movie.unusedSpace > 0:
-            movie.add(hashFunction(newItem.movie_name),newItem)
-        elif movie.unusedSpace == 0:
-            break
+        movie.add(hashFunction(newItem.movie_name),newItem)
         counter+=1
 end = time.time()
 print(f"The movie table had {movie.collision} collision")
@@ -107,10 +104,7 @@ with open(file, 'r', newline = '', encoding = "utf8") as csvfile:
             counter+=1
             continue
         newItem = DataItem(row)
-        if quote.unusedSpace > 0:
-            quote.add(hashFunction(newItem.quote),newItem)
-        elif quote.unusedSpace == 0:
-            break
+        quote.add(hashFunction(newItem.quote),newItem)
         counter+=1  
 end = time.time()
 print(f"The quote table had {quote.collision} collision")
