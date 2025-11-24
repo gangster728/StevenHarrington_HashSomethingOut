@@ -4,12 +4,17 @@ import time
 #Author: Steven Harrington
 #Date: 11/23/2025
 #How techniques work
-    #Division hash function
+    #Folding function
         #takes in a string
         #makes a integer to keep track of the sum of characters
         #go through each character in the string, and converts to unicode value
         #it adds this to the sum
-        #then it returns the remainder of the sum divided by the size of the table or 997
+        #converts the sum into a string
+        #Makes a integer to keep track of sum of individual numbers
+        #circle thorugh each value of the string
+        #adds the number to the sum of the individual numbers
+        #returns the remainder of this sum divided by 997
+
     #Add/list appending collision
         #attempts to add at the index it recieved from the hash function
         #if there is nothing there, then it inputs it at this spot
@@ -58,15 +63,19 @@ class HashTable:
 #Takes in a string and converts it to a integer
 def hashFunction(stringData):
     #keeps track of the sum
+    sum = 0
     sum_of_chars = 0
     #loops through the string, getting the unicode value of each character
     for char in stringData:
         sum_of_chars += ord(char)
+    string = str(sum_of_chars)
+    for char in string:
+        sum += int(char)
     
     #return the remainder of the sum divided by 997
-    return sum_of_chars % 997
+    return sum % 997
 
-print("Optimization technique: division hashing and list appending collision technique")
+print("Optimization technique: Folding hashing and list appending collision technique")
 
 #create both movie and quote hash Tables
 movie = HashTable(997)
